@@ -42,6 +42,9 @@ def _making_one_df_simple(df: pd.DataFrame) -> pd.DataFrame:
     
     # Rename columns (adjust indexes based on your v_lines)
     df_new.columns = ['Description', 'Cant', 'Barcode_Registry', 'Misc']
+
+
+
     return df_new
 
 def _clean_df(df:pd) -> pd.DataFrame:
@@ -59,7 +62,9 @@ def _clean_df(df:pd) -> pd.DataFrame:
             df["Description"].iloc[u] = df["Description"].iloc[u]+ "".join(strings_cant[:len(strings_cant)-1])
         if len(strings_des) >= 2:
             df["Description"].loc[u] = "".join(strings_des[1:])
-    return df 
+    
+    pivot =  df.groupby(["Barcode_Registry", "Description"], as_index=False).agg({"Cant": "sum"})
+    return pivot
 
 
 
